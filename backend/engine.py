@@ -10,7 +10,7 @@ import sympy as s
 from sympy.core.function import AppliedUndef
 from sympy.geometry import Point, Line, Polygon, Triangle, Circle
 
-CATALOG = json.loads((Path(__file__).resolve().parent.parent / 'shared/operations.json').read_text())
+CATALOG = json.loads((Path(__file__).resolve().parent.parent / 'shared/operations.json').read_text(encoding='utf-8'))
 OP_IDS = {op['id'] for op in CATALOG}
 NAME = re.compile(r'^[A-Za-z][A-Za-z0-9_]{0,39}$')
 NUMBER = re.compile(r'^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$')

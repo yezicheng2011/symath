@@ -1,0 +1,31 @@
+[Unit]
+Description=SyMath symbolic computation service
+After=network.target
+
+[Service]
+Type=simple
+User=__SERVICE_USER__
+Group=__SERVICE_USER__
+WorkingDirectory=__APP_ROOT__/current
+ExecStart=__APP_ROOT__/venv/bin/python -m backend.server --port __API_PORT__
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+Environment=SYMATH_ALLOWED_ORIGINS=https://__DOMAIN__
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+MemoryMax=3G
+TasksMax=128
+CPUQuota=400%
+TimeoutStopSec=8
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,17 @@
+node_modules/
+dist/
+playwright-report/
+test-results/
+*.local
+.venv/
+__pycache__/
+*.pyc
+
+.env
+.env.*
+!.env.example
+build/
+release/
+*.spec.bak
+public/THIRD_PARTY_NOTICES.txt
+public/fonts/

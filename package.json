@@ -1,0 +1,37 @@
+{
+  "name": "symath",
+  "private": true,
+  "license": "Apache-2.0",
+  "version": "2.0.0",
+  "type": "module",
+  "overrides": {
+    "rollup": "4.59.0"
+  },
+  "scripts": {
+    "predev": "node scripts/assets.mjs && node scripts/licenses.mjs",
+    "dev": "vite --host 127.0.0.1",
+    "build": "node scripts/assets.mjs && node scripts/licenses.mjs && tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "tsx --test tests/*.test.ts && .venv/bin/python -m unittest discover -s backend/tests -v",
+    "api": ".venv/bin/python -m backend.server",
+    "test:browser":"node tests/browser.mjs",
+    "licenses": "node scripts/licenses.mjs"
+  },
+  "dependencies": {
+    "@cortex-js/compute-engine": "0.50.2",
+    "mathlive": "0.111.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.186.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vite": "7.3.7"
+  }
+}

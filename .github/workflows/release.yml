@@ -1,0 +1,165 @@
+name: Desktop release
+# Builds the offline desktop app (local SymPy kernel + bundled front end) and publishes a GitHub Release.
+# Free signing only: macOS ad-hoc codesign (no Apple Developer ID), Windows self-signed Authenticode.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag, e.g. v1.0.0'
+        required: true
+permissions:
+  contents: write
+env:
+  PY_VERSION: '3.12.10'
+jobs:
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Version
+        id: v
+        run: |
+          tag="${{ github.event.inputs.tag || github.ref_name }}"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"; echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+      - name: Install universal2 Python from python.org (needed for an arm64+x86_64 app)
+        run: |
+          curl -fsSL -o /tmp/python.pkg "https://www.python.org/ftp/python/${PY_VERSION}/python-${PY_VERSION}-macos11.pkg"
+          sudo installer -pkg /tmp/python.pkg -target /
+          PY=/Library/Frameworks/Python.framework/Versions/3.12/bin/python3
+          lipo -info /Library/Frameworks/Python.framework/Versions/3.12/Python
+          "$PY" -m venv .venv
+          .venv/bin/pip install --upgrade pip
+          .venv/bin/pip install -r backend/requirements.txt -r desktop/requirements.txt
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - name: Build universal2 SyMath.app
+        env:
+          SYMATH_TARGET_ARCH: universal2
+          SYMATH_VERSION: ${{ steps.v.outputs.version }}
+        run: .venv/bin/pyinstaller desktop/symath.spec --noconfirm --distpath release --workpath build/pyi
+      - name: Check every Mach-O is universal
+        run: |
+          bad=0
+          while IFS= read -r f; do
+            if file "$f" | grep -q 'Mach-O'; then
+              archs="$(lipo -archs "$f" 2>/dev/null || true)"
+              case "$archs" in *x86_64*arm64*|*arm64*x86_64*) ;; *) echo "::error::not universal: $f ($archs)"; bad=1;; esac
+            fi
+          done < <(find release/SyMath.app -type f)
+          lipo -info release/SyMath.app/Contents/MacOS/SyMath
+          exit $bad
+      - name: Ad-hoc sign (free; avoids the "damaged" error on Apple silicon)
+        run: |
+          xattr -cr release/SyMath.app
+          codesign --force --deep --timestamp=none --sign - release/SyMath.app
+          codesign --verify --deep --strict --verbose=2 release/SyMath.app
+          codesign -dv --verbose=2 release/SyMath.app 2>&1 | tee /tmp/cs.txt
+          grep -q 'Signature=adhoc' /tmp/cs.txt
+      - name: Smoke test (native arm64 and x86_64 via Rosetta)
+        run: |
+          smoke() {
+            SYMATH_NO_WINDOW=1 SYMATH_DESKTOP_PORT=18765 $1 release/SyMath.app/Contents/MacOS/SyMath & pid=$!
+            for i in $(seq 1 60); do curl -fs http://127.0.0.1:18765/api/health && break; sleep 1; done
+            curl -fs http://127.0.0.1:18765/ | grep -q '<title>SyMath'
+            curl -fs -X POST -H 'Content-Type: application/json' http://127.0.0.1:18765/api/calculate \
+              -d '{"id":"smoke-test-0000000001","operation":"factor","variable":"x","ast":["Subtract",["Power","x",2],1]}' | tee /tmp/r.json
+            grep -q 'x - 1' /tmp/r.json
+            kill $pid; wait $pid || true
+          }
+          smoke ""
+          if arch -x86_64 /usr/bin/true 2>/dev/null; then smoke "arch -x86_64"; else echo "Rosetta not available; skipped x86_64 run"; fi
+      - name: Build DMG
+        run: |
+          v="${{ steps.v.outputs.version }}"
+          mkdir -p dmgroot out
+          ditto release/SyMath.app dmgroot/SyMath.app
+          ln -s /Applications dmgroot/Applications
+          cp LICENSE NOTICE dmgroot/
+          hdiutil create -volname "SyMath $v" -srcfolder dmgroot -fs HFS+ -format UDZO -ov "out/SyMath-$v-macOS-universal.dmg"
+          # verify the signature survives inside the image
+          mnt="$(hdiutil attach -nobrowse -readonly "out/SyMath-$v-macOS-universal.dmg" | awk -F'\t' '/\/Volumes\// {print $NF}' | tail -1)"
+          codesign --verify --deep --strict "$mnt/SyMath.app"
+          lipo -info "$mnt/SyMath.app/Contents/MacOS/SyMath"
+          hdiutil detach "$mnt"
+      - uses: actions/upload-artifact@v4
+        with: { name: macos, path: out/* }
+
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run: { shell: pwsh }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12', architecture: x64 }
+      - name: Version
+        id: v
+        run: |
+          $tag = "${{ github.event.inputs.tag || github.ref_name }}"
+          "tag=$tag" >> $env:GITHUB_OUTPUT; "version=$($tag.TrimStart('v'))" >> $env:GITHUB_OUTPUT
+      - run: |
+          python -m venv .venv
+          .venv\Scripts\python -m pip install --upgrade pip
+          .venv\Scripts\pip install -r backend/requirements.txt -r desktop/requirements.txt
+      - run: npm ci
+      - run: npm run build
+      - name: Build SyMath.exe
+        env:
+          SYMATH_VERSION: ${{ steps.v.outputs.version }}
+        run: .venv\Scripts\pyinstaller desktop/symath.spec --noconfirm --distpath release --workpath build/pyi
+      - name: Smoke test
+        run: |
+          $env:SYMATH_NO_WINDOW = '1'; $env:SYMATH_DESKTOP_PORT = '18765'
+          $p = Start-Process -FilePath release\SyMath.exe -PassThru
+          $ok = $false
+          for ($i = 0; $i -lt 90; $i++) { try { Invoke-RestMethod http://127.0.0.1:18765/api/health | Out-Null; $ok = $true; break } catch { Start-Sleep 1 } }
+          if (-not $ok) { throw 'desktop server did not start' }
+          $body = '{"id":"smoke-test-0000000001","operation":"factor","variable":"x","ast":["Subtract",["Power","x",2],1]}'
+          $r = Invoke-RestMethod -Method Post -ContentType 'application/json' -Body $body http://127.0.0.1:18765/api/calculate
+          $r | ConvertTo-Json -Depth 5
+          if ($r.result.plain -notmatch 'x - 1') { throw 'calculation failed' }
+          Get-Process SyMath -ErrorAction SilentlyContinue | Stop-Process -Force
+      - name: Self-signed Authenticode signature (free)
+        run: |
+          $v = "${{ steps.v.outputs.version }}"
+          New-Item -ItemType Directory -Force out | Out-Null
+          $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject 'CN=SyMath (self-signed), O=daniel.ye' `
+                    -CertStoreLocation Cert:\CurrentUser\My -KeyAlgorithm RSA -KeyLength 3072 -HashAlgorithm SHA256 `
+                    -NotAfter (Get-Date).AddYears(5)
+          Export-Certificate -Cert $cert -FilePath out\SyMath-self-signed-codesign.cer | Out-Null
+          $signtool = Get-ChildItem 'C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe' | Sort-Object FullName -Descending | Select-Object -First 1
+          Copy-Item release\SyMath.exe "out\SyMath-$v-Windows-x64.exe"
+          & $signtool.FullName sign /fd SHA256 /sha1 $cert.Thumbprint /s My /tr http://timestamp.digicert.com /td SHA256 /d SyMath "out\SyMath-$v-Windows-x64.exe"
+          if ($LASTEXITCODE -ne 0) { throw 'signtool failed' }
+          $sig = Get-AuthenticodeSignature "out\SyMath-$v-Windows-x64.exe"
+          $sig | Format-List Status,StatusMessage,SignerCertificate,TimeStamperCertificate
+          if (-not $sig.SignerCertificate) { throw 'no signature' }
+      - uses: actions/upload-artifact@v4
+        with: { name: windows, path: out/* }
+
+  release:
+    needs: [macos, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { path: artifacts, merge-multiple: true }
+      - name: Checksums
+        run: cd artifacts && sha256sum * > SHA256SUMS.txt && cat SHA256SUMS.txt
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${{ github.event.inputs.tag || github.ref_name }}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" artifacts/* --clobber
+          else
+            gh release create "$tag" artifacts/* --title "SyMath ${tag}" --notes-file docs/RELEASE_NOTES.md --target "$GITHUB_SHA"
+          fi

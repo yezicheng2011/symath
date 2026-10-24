@@ -1,0 +1,910 @@
+[
+  {
+    "id": "evaluate",
+    "label": "计算表达式",
+    "category": "algebra",
+    "symbol": "=",
+    "description": "计算数学表达式中的积分、导数、求和与函数",
+    "example": "\\int_0^\\infty e^{-x^2}\\,dx"
+  },
+  {
+    "id": "simplify",
+    "label": "符号化简",
+    "category": "algebra",
+    "symbol": "≡",
+    "description": "在当前假设下化简，保留精确值",
+    "example": "\\frac{x^2-1}{x-1}"
+  },
+  {
+    "id": "expand",
+    "label": "展开表达式",
+    "category": "algebra",
+    "symbol": "↗",
+    "description": "展开多项式、乘积与幂",
+    "example": "(x+y)^5"
+  },
+  {
+    "id": "factor",
+    "label": "因式分解",
+    "category": "algebra",
+    "symbol": "⋅",
+    "description": "在有理数域分解多项式",
+    "example": "x^6-1"
+  },
+  {
+    "id": "cancel",
+    "label": "有理式约分",
+    "category": "algebra",
+    "symbol": "÷",
+    "example": "\\frac{x^3-1}{x^2-1}"
+  },
+  {
+    "id": "together",
+    "label": "通分",
+    "category": "algebra",
+    "symbol": "+",
+    "example": "\\frac{1}{x}+\\frac{1}{x+1}"
+  },
+  {
+    "id": "apart",
+    "label": "部分分式",
+    "category": "algebra",
+    "symbol": "∥",
+    "example": "\\frac{1}{x^2-1}"
+  },
+  {
+    "id": "trigsimp",
+    "label": "三角化简",
+    "category": "algebra",
+    "symbol": "∿",
+    "example": "\\sin^2 x+\\cos^2 x"
+  },
+  {
+    "id": "expand_trig",
+    "label": "三角展开",
+    "category": "algebra",
+    "symbol": "∿",
+    "example": "\\sin(2x)"
+  },
+  {
+    "id": "powsimp",
+    "label": "幂式化简",
+    "category": "algebra",
+    "symbol": "aⁿ",
+    "example": "x^a x^b"
+  },
+  {
+    "id": "expand_log",
+    "label": "对数展开",
+    "category": "algebra",
+    "symbol": "ln",
+    "example": "\\ln(x^2)"
+  },
+  {
+    "id": "logcombine",
+    "label": "对数合并",
+    "category": "algebra",
+    "symbol": "ln",
+    "example": "\\ln x+\\ln y"
+  },
+  {
+    "id": "radsimp",
+    "label": "根式有理化",
+    "category": "algebra",
+    "symbol": "√",
+    "example": "\\frac{1}{1+\\sqrt{2}}"
+  },
+  {
+    "id": "collect",
+    "label": "按变量收集",
+    "category": "algebra",
+    "symbol": "Σ",
+    "example": "x^2+ax+bx+1"
+  },
+  {
+    "id": "substitute",
+    "label": "变量代入",
+    "category": "algebra",
+    "symbol": "↦",
+    "params": [
+      "point"
+    ],
+    "example": "x^2+2x+1"
+  },
+  {
+    "id": "poly_div",
+    "label": "多项式除法",
+    "category": "algebra",
+    "symbol": "÷",
+    "secondary": "除式",
+    "example": "x^3-1",
+    "secondExample": "x-1"
+  },
+  {
+    "id": "poly_gcd",
+    "label": "多项式最大公因式",
+    "category": "algebra",
+    "symbol": "gcd",
+    "secondary": "另一多项式",
+    "example": "x^3-1",
+    "secondExample": "x^2-1"
+  },
+  {
+    "id": "poly_lcm",
+    "label": "多项式最小公倍式",
+    "category": "algebra",
+    "symbol": "lcm",
+    "secondary": "另一多项式",
+    "example": "x^2-1",
+    "secondExample": "x^2+2x+1"
+  },
+  {
+    "id": "resultant",
+    "label": "结式／消元",
+    "category": "algebra",
+    "symbol": "Res",
+    "secondary": "另一多项式",
+    "example": "x^2-y",
+    "secondExample": "x-2"
+  },
+  {
+    "id": "discriminant",
+    "label": "多项式判别式",
+    "category": "algebra",
+    "symbol": "Δ",
+    "example": "ax^2+bx+c"
+  },
+  {
+    "id": "groebner",
+    "label": "Gröbner 基",
+    "category": "algebra",
+    "symbol": "G",
+    "input": "system",
+    "params": [
+      "variables"
+    ],
+    "example": "[xy-1,y^2-x]"
+  },
+  {
+    "id": "solve",
+    "label": "符号解方程",
+    "category": "equations",
+    "symbol": "=",
+    "params": [
+      "domain"
+    ],
+    "example": "\\sin x=0"
+  },
+  {
+    "id": "solve_system",
+    "label": "方程组",
+    "category": "equations",
+    "symbol": "{",
+    "input": "system",
+    "params": [
+      "variables"
+    ],
+    "example": "\\begin{cases}x+y=3\\\\x-y=1\\end{cases}"
+  },
+  {
+    "id": "inequality",
+    "label": "不等式／不等式组",
+    "category": "equations",
+    "symbol": "≤",
+    "params": [
+      "domain"
+    ],
+    "example": "x^2-4\\le0"
+  },
+  {
+    "id": "nsolve",
+    "label": "数值求根",
+    "category": "equations",
+    "symbol": "≈",
+    "params": [
+      "point",
+      "precision"
+    ],
+    "example": "\\cos x=x"
+  },
+  {
+    "id": "nroots",
+    "label": "多项式全部数值根",
+    "category": "equations",
+    "symbol": "ℂ",
+    "params": [
+      "precision"
+    ],
+    "example": "x^5-x+1"
+  },
+  {
+    "id": "diophantine",
+    "label": "丢番图方程",
+    "category": "equations",
+    "symbol": "ℤ",
+    "example": "3x+5y=17"
+  },
+  {
+    "id": "dsolve",
+    "label": "常微分方程",
+    "category": "equations",
+    "symbol": "y′",
+    "params": [
+      "dependent",
+      "initial_point",
+      "initial_value",
+      "initial_slope"
+    ],
+    "example": "y^{\\prime\\prime}+y=0"
+  },
+  {
+    "id": "recurrence",
+    "label": "递推方程",
+    "category": "equations",
+    "symbol": "aₙ",
+    "params": [
+      "dependent",
+      "initial_point",
+      "initial_value",
+      "initial_slope"
+    ],
+    "example": "f(n+1)-2f(n)=0"
+  },
+  {
+    "id": "diff",
+    "label": "微分／偏微分",
+    "category": "calculus",
+    "symbol": "∂",
+    "params": [
+      "order"
+    ],
+    "example": "e^{x^2}\\sin x"
+  },
+  {
+    "id": "integrate",
+    "label": "不定积分",
+    "category": "calculus",
+    "symbol": "∫",
+    "example": "\\frac{1}{1+x^2}"
+  },
+  {
+    "id": "definite",
+    "label": "定积分／反常积分",
+    "category": "calculus",
+    "symbol": "∫",
+    "params": [
+      "lower",
+      "upper"
+    ],
+    "example": "e^{-x^2}"
+  },
+  {
+    "id": "limit",
+    "label": "极限与单侧极限",
+    "category": "calculus",
+    "symbol": "lim",
+    "params": [
+      "point",
+      "direction"
+    ],
+    "example": "\\frac{\\sin x}{x}"
+  },
+  {
+    "id": "series",
+    "label": "Taylor／Laurent 级数",
+    "category": "calculus",
+    "symbol": "Σ",
+    "params": [
+      "point",
+      "order"
+    ],
+    "example": "\\frac{e^x}{x^2}"
+  },
+  {
+    "id": "summation",
+    "label": "有限／无穷求和",
+    "category": "calculus",
+    "symbol": "Σ",
+    "params": [
+      "lower",
+      "upper"
+    ],
+    "example": "\\frac{1}{2^x}"
+  },
+  {
+    "id": "product",
+    "label": "有限／无穷连乘",
+    "category": "calculus",
+    "symbol": "Π",
+    "params": [
+      "lower",
+      "upper"
+    ],
+    "example": "1+\\frac{1}{x^2}"
+  },
+  {
+    "id": "laplace",
+    "label": "Laplace 变换",
+    "category": "calculus",
+    "symbol": "ℒ",
+    "params": [
+      "target"
+    ],
+    "example": "\\sin x"
+  },
+  {
+    "id": "inverse_laplace",
+    "label": "逆 Laplace 变换",
+    "category": "calculus",
+    "symbol": "ℒ⁻¹",
+    "params": [
+      "target"
+    ],
+    "example": "\\frac{1}{x^2+1}"
+  },
+  {
+    "id": "fourier",
+    "label": "Fourier 变换",
+    "category": "calculus",
+    "symbol": "ℱ",
+    "params": [
+      "target"
+    ],
+    "example": "e^{-x^2}"
+  },
+  {
+    "id": "inverse_fourier",
+    "label": "逆 Fourier 变换",
+    "category": "calculus",
+    "symbol": "ℱ⁻¹",
+    "params": [
+      "target"
+    ],
+    "example": "e^{-\\pi x^2}"
+  },
+  {
+    "id": "gradient",
+    "label": "梯度",
+    "category": "calculus",
+    "symbol": "∇",
+    "params": [
+      "variables"
+    ],
+    "example": "x^2y+\\sin y"
+  },
+  {
+    "id": "hessian",
+    "label": "Hessian 矩阵",
+    "category": "calculus",
+    "symbol": "H",
+    "params": [
+      "variables"
+    ],
+    "example": "x^3+y^3-3xy"
+  },
+  {
+    "id": "jacobian",
+    "label": "Jacobian 矩阵",
+    "category": "calculus",
+    "symbol": "J",
+    "params": [
+      "variables"
+    ],
+    "input": "list",
+    "example": "\\left[x^2+y,xy\\right]"
+  },
+  {
+    "id": "numeric_integral",
+    "label": "高精度数值积分",
+    "category": "calculus",
+    "symbol": "≈∫",
+    "params": [
+      "lower",
+      "upper",
+      "precision"
+    ],
+    "example": "e^{-x^2}"
+  },
+  {
+    "id": "numeric",
+    "label": "任意精度数值",
+    "category": "calculus",
+    "symbol": "≈",
+    "params": [
+      "precision"
+    ],
+    "example": "\\pi"
+  },
+  {
+    "id": "determinant",
+    "label": "行列式",
+    "category": "matrices",
+    "symbol": "det",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}"
+  },
+  {
+    "id": "invert",
+    "label": "逆矩阵",
+    "category": "matrices",
+    "symbol": "A⁻¹",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}"
+  },
+  {
+    "id": "transpose",
+    "label": "转置",
+    "category": "matrices",
+    "symbol": "Aᵀ",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}1&2&3\\\\4&5&6\\end{pmatrix}"
+  },
+  {
+    "id": "rank",
+    "label": "矩阵的秩",
+    "category": "matrices",
+    "symbol": "rk",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}1&2\\\\2&4\\end{pmatrix}"
+  },
+  {
+    "id": "rref",
+    "label": "行最简形",
+    "category": "matrices",
+    "symbol": "R",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}1&2&3\\\\2&4&7\\end{pmatrix}"
+  },
+  {
+    "id": "nullspace",
+    "label": "零空间基",
+    "category": "matrices",
+    "symbol": "ker",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}1&2&3\\\\2&4&6\\end{pmatrix}"
+  },
+  {
+    "id": "columnspace",
+    "label": "列空间基",
+    "category": "matrices",
+    "symbol": "Im",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}1&2\\\\2&4\\end{pmatrix}"
+  },
+  {
+    "id": "eigenvals",
+    "label": "特征值与重数",
+    "category": "matrices",
+    "symbol": "λ",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}"
+  },
+  {
+    "id": "eigenvects",
+    "label": "特征向量",
+    "category": "matrices",
+    "symbol": "vλ",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}"
+  },
+  {
+    "id": "diagonalize",
+    "label": "相似对角化 P D P⁻¹",
+    "category": "matrices",
+    "symbol": "D",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}"
+  },
+  {
+    "id": "charpoly",
+    "label": "特征多项式",
+    "category": "matrices",
+    "symbol": "χ",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}"
+  },
+  {
+    "id": "trace",
+    "label": "矩阵的迹",
+    "category": "matrices",
+    "symbol": "tr",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}"
+  },
+  {
+    "id": "lu",
+    "label": "LU 分解",
+    "category": "matrices",
+    "symbol": "LU",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}2&1\\\\4&3\\end{pmatrix}"
+  },
+  {
+    "id": "qr",
+    "label": "QR 分解",
+    "category": "matrices",
+    "symbol": "QR",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}1&1\\\\1&0\\end{pmatrix}"
+  },
+  {
+    "id": "cholesky",
+    "label": "Cholesky 分解",
+    "category": "matrices",
+    "symbol": "LLᵀ",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}4&2\\\\2&3\\end{pmatrix}"
+  },
+  {
+    "id": "svd",
+    "label": "符号奇异值分解",
+    "category": "matrices",
+    "symbol": "SVD",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}1&0\\\\0&2\\end{pmatrix}"
+  },
+  {
+    "id": "norm",
+    "label": "向量／矩阵范数",
+    "category": "matrices",
+    "symbol": "‖A‖",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}3\\\\4\\end{pmatrix}"
+  },
+  {
+    "id": "matrixexp",
+    "label": "矩阵指数",
+    "category": "matrices",
+    "symbol": "eᴬ",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}0&1\\\\-1&0\\end{pmatrix}"
+  },
+  {
+    "id": "dot",
+    "label": "向量点积",
+    "category": "matrices",
+    "symbol": "·",
+    "secondary": "另一向量",
+    "example": "[1,2,3]",
+    "secondExample": "[4,5,6]"
+  },
+  {
+    "id": "cross",
+    "label": "向量叉积",
+    "category": "matrices",
+    "symbol": "×",
+    "secondary": "另一向量",
+    "example": "[1,0,0]",
+    "secondExample": "[0,1,0]"
+  },
+  {
+    "id": "linear_solve",
+    "label": "线性系统 Ax = b",
+    "category": "matrices",
+    "symbol": "Ax=b",
+    "input": "matrix",
+    "secondary": "右端向量 b",
+    "example": "\\begin{pmatrix}2&1\\\\1&-1\\end{pmatrix}",
+    "secondExample": "[5,1]"
+  },
+  {
+    "id": "factorint",
+    "label": "整数质因数分解",
+    "category": "discrete",
+    "symbol": "pⁿ",
+    "example": "1234567890"
+  },
+  {
+    "id": "isprime",
+    "label": "素性判定",
+    "category": "discrete",
+    "symbol": "P?",
+    "example": "1000000007"
+  },
+  {
+    "id": "nextprime",
+    "label": "下一个素数",
+    "category": "discrete",
+    "symbol": "p+",
+    "example": "1000000"
+  },
+  {
+    "id": "prevprime",
+    "label": "上一个素数",
+    "category": "discrete",
+    "symbol": "p−",
+    "example": "1000000"
+  },
+  {
+    "id": "divisors",
+    "label": "全部正因数",
+    "category": "discrete",
+    "symbol": "d|n",
+    "example": "360"
+  },
+  {
+    "id": "totient",
+    "label": "Euler φ 函数",
+    "category": "discrete",
+    "symbol": "φ",
+    "example": "360"
+  },
+  {
+    "id": "gcd",
+    "label": "最大公约数",
+    "category": "discrete",
+    "symbol": "gcd",
+    "secondary": "另一整数",
+    "example": "84",
+    "secondExample": "126"
+  },
+  {
+    "id": "lcm",
+    "label": "最小公倍数",
+    "category": "discrete",
+    "symbol": "lcm",
+    "secondary": "另一整数",
+    "example": "84",
+    "secondExample": "126"
+  },
+  {
+    "id": "mod_inverse",
+    "label": "模逆元",
+    "category": "discrete",
+    "symbol": "a⁻¹",
+    "params": [
+      "modulus"
+    ],
+    "example": "7"
+  },
+  {
+    "id": "mod_power",
+    "label": "模幂",
+    "category": "discrete",
+    "symbol": "mod",
+    "params": [
+      "exponent",
+      "modulus"
+    ],
+    "example": "7"
+  },
+  {
+    "id": "binomial",
+    "label": "组合数",
+    "category": "discrete",
+    "symbol": "Cⁿₖ",
+    "params": [
+      "order"
+    ],
+    "example": "100"
+  },
+  {
+    "id": "permutations",
+    "label": "排列数",
+    "category": "discrete",
+    "symbol": "Pⁿₖ",
+    "params": [
+      "order"
+    ],
+    "example": "10"
+  },
+  {
+    "id": "fibonacci",
+    "label": "Fibonacci 数",
+    "category": "discrete",
+    "symbol": "Fₙ",
+    "example": "100"
+  },
+  {
+    "id": "bernoulli",
+    "label": "Bernoulli 数",
+    "category": "discrete",
+    "symbol": "Bₙ",
+    "example": "20"
+  },
+  {
+    "id": "continued_fraction",
+    "label": "连分数",
+    "category": "discrete",
+    "symbol": "CF",
+    "example": "\\frac{415}{93}"
+  },
+  {
+    "id": "real",
+    "label": "实部",
+    "category": "complex",
+    "symbol": "Re",
+    "example": "(1+2i)^3"
+  },
+  {
+    "id": "imag",
+    "label": "虚部",
+    "category": "complex",
+    "symbol": "Im",
+    "example": "(1+2i)^3"
+  },
+  {
+    "id": "conjugate",
+    "label": "共轭",
+    "category": "complex",
+    "symbol": "z̄",
+    "example": "3+4i"
+  },
+  {
+    "id": "abs",
+    "label": "绝对值／复数模",
+    "category": "complex",
+    "symbol": "|z|",
+    "example": "3+4i"
+  },
+  {
+    "id": "arg",
+    "label": "复数辐角",
+    "category": "complex",
+    "symbol": "arg",
+    "example": "1+i"
+  },
+  {
+    "id": "expand_complex",
+    "label": "复数展开",
+    "category": "complex",
+    "symbol": "ℂ",
+    "example": "(x+iy)^3"
+  },
+  {
+    "id": "polar",
+    "label": "复数极坐标",
+    "category": "complex",
+    "symbol": "r∠θ",
+    "example": "1+i"
+  },
+  {
+    "id": "mean",
+    "label": "算术平均数",
+    "category": "statistics",
+    "symbol": "μ",
+    "input": "list",
+    "example": "[2,4,4,4,5,5,7,9]"
+  },
+  {
+    "id": "median",
+    "label": "中位数",
+    "category": "statistics",
+    "symbol": "M",
+    "input": "list",
+    "example": "[2,4,4,4,5,5,7,9]"
+  },
+  {
+    "id": "variance",
+    "label": "总体方差",
+    "category": "statistics",
+    "symbol": "σ²",
+    "input": "list",
+    "example": "[2,4,4,4,5,5,7,9]"
+  },
+  {
+    "id": "stddev",
+    "label": "总体标准差",
+    "category": "statistics",
+    "symbol": "σ",
+    "input": "list",
+    "example": "[2,4,4,4,5,5,7,9]"
+  },
+  {
+    "id": "describe",
+    "label": "描述统计汇总",
+    "category": "statistics",
+    "symbol": "stat",
+    "input": "list",
+    "example": "[2,4,4,4,5,5,7,9]"
+  },
+  {
+    "id": "correlation",
+    "label": "Pearson 相关系数",
+    "category": "statistics",
+    "symbol": "r",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}1&2\\\\2&4\\\\3&5\\\\4&8\\end{pmatrix}"
+  },
+  {
+    "id": "linear_fit",
+    "label": "线性最小二乘拟合",
+    "category": "statistics",
+    "symbol": "ŷ",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}1&2\\\\2&4\\\\3&5\\\\4&8\\end{pmatrix}"
+  },
+  {
+    "id": "polynomial_fit",
+    "label": "多项式最小二乘拟合",
+    "category": "statistics",
+    "symbol": "Pₙ",
+    "input": "matrix",
+    "params": [
+      "order"
+    ],
+    "example": "\\begin{pmatrix}0&1\\\\1&2\\\\2&5\\\\3&10\\end{pmatrix}"
+  },
+  {
+    "id": "normal_pdf",
+    "label": "标准正态密度",
+    "category": "statistics",
+    "symbol": "φ(x)",
+    "example": "x"
+  },
+  {
+    "id": "normal_cdf",
+    "label": "标准正态分布函数",
+    "category": "statistics",
+    "symbol": "Φ(x)",
+    "example": "1.96"
+  },
+  {
+    "id": "distance",
+    "label": "两点距离",
+    "category": "geometry",
+    "symbol": "AB",
+    "secondary": "点 B",
+    "example": "[0,0]",
+    "secondExample": "[3,4]"
+  },
+  {
+    "id": "midpoint",
+    "label": "线段中点",
+    "category": "geometry",
+    "symbol": "M",
+    "secondary": "点 B",
+    "example": "[0,0]",
+    "secondExample": "[3,4]"
+  },
+  {
+    "id": "triangle_area",
+    "label": "三角形面积",
+    "category": "geometry",
+    "symbol": "△",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}0&0\\\\4&0\\\\0&3\\end{pmatrix}"
+  },
+  {
+    "id": "triangle_centroid",
+    "label": "三角形重心",
+    "category": "geometry",
+    "symbol": "G",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}0&0\\\\4&0\\\\0&3\\end{pmatrix}"
+  },
+  {
+    "id": "polygon_area",
+    "label": "多边形面积",
+    "category": "geometry",
+    "symbol": "S",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}0&0\\\\4&0\\\\4&3\\\\0&3\\end{pmatrix}"
+  },
+  {
+    "id": "circumcircle",
+    "label": "三点外接圆",
+    "category": "geometry",
+    "symbol": "⊙",
+    "input": "matrix",
+    "example": "\\begin{pmatrix}0&0\\\\4&0\\\\0&3\\end{pmatrix}"
+  },
+  {
+    "id": "line_intersection",
+    "label": "两直线交点",
+    "category": "geometry",
+    "symbol": "∩",
+    "input": "matrix",
+    "description": "输入四行二维点，前两行确定第一条直线",
+    "example": "\\begin{pmatrix}0&0\\\\1&1\\\\0&1\\\\1&0\\end{pmatrix}"
+  },
+  {
+    "id": "point_line_distance",
+    "label": "点到直线距离",
+    "category": "geometry",
+    "symbol": "d",
+    "input": "matrix",
+    "description": "第一行是点，第二、三行确定直线",
+    "example": "\\begin{pmatrix}0&2\\\\0&0\\\\1&0\\end{pmatrix}"
+  }
+]

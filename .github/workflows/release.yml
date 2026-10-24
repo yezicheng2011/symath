@@ -116,10 +116,14 @@ jobs:
         run: .venv\Scripts\pyinstaller desktop/symath.spec --noconfirm --distpath release --workpath build/pyi
       - name: Smoke test
         run: |
-          $env:SYMATH_NO_WINDOW = '1'; $env:SYMATH_DESKTOP_PORT = '18765'
+          $env:SYMATH_NO_WINDOW = '1'; $env:SYMATH_DESKTOP_PORT = '18765'; $env:SYMATH_LOG = "$env:RUNNER_TEMP\symath.log"
           $p = Start-Process -FilePath release\SyMath.exe -PassThru
           $ok = $false
-          for ($i = 0; $i -lt 90; $i++) { try { Invoke-RestMethod http://127.0.0.1:18765/api/health | Out-Null; $ok = $true; break } catch { Start-Sleep 1 } }
+          for ($i = 0; $i -lt 120; $i++) {
+            try { Invoke-RestMethod -TimeoutSec 3 http://127.0.0.1:18765/api/health | Out-Null; $ok = $true; break } catch { Start-Sleep 1 }
+            if ($p.HasExited) { Write-Host "SyMath.exe exited with code $($p.ExitCode)"; break }
+          }
+          if (Test-Path $env:SYMATH_LOG) { Get-Content $env:SYMATH_LOG }
           if (-not $ok) { throw 'desktop server did not start' }
           $body = '{"id":"smoke-test-0000000001","operation":"factor","variable":"x","ast":["Subtract",["Power","x",2],1]}'
           $r = Invoke-RestMethod -Method Post -ContentType 'application/json' -Body $body http://127.0.0.1:18765/api/calculate

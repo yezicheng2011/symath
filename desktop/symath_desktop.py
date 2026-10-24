@@ -16,7 +16,21 @@ def resource_root():
     return getattr(sys, '_MEIPASS', os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
+def setup_logging():
+    """Windowed builds have no console (sys.stdout is None): write a small log for troubleshooting."""
+    path = os.environ.get('SYMATH_LOG')
+    if not path and sys.stdout is not None and sys.stderr is not None:
+        return
+    import tempfile
+    try:
+        handle = open(path or os.path.join(tempfile.gettempdir(), 'SyMath.log'), 'a', encoding='utf-8', buffering=1)
+    except OSError:
+        return
+    sys.stdout = sys.stderr = handle
+
+
 def main():
+    setup_logging()
     root = resource_root()
     if root not in sys.path:
         sys.path.insert(0, root)
@@ -50,4 +64,11 @@ def main():
 
 if __name__ == '__main__':
     mp.freeze_support()  # required: calculations run in spawned worker processes
-    main()
+    try:
+        main()
+    except SystemExit:
+        raise
+    except BaseException:
+        import traceback
+        traceback.print_exc()
+        raise

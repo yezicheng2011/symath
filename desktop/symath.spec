@@ -34,7 +34,7 @@ if sys.platform == 'darwin':
                  version=VERSION,
                  info_plist={'CFBundleShortVersionString': VERSION, 'CFBundleVersion': VERSION,
                              'CFBundleDisplayName': 'SyMath', 'NSHighResolutionCapable': True,
-                             'LSMinimumSystemVersion': '11.0', 'NSHumanReadableCopyright': 'Copyright 2026 daniel.ye. Apache-2.0'})
+                             'LSMinimumSystemVersion': '11.0', 'NSHumanReadableCopyright': 'Copyright 2026 daniel.yeå¶å­è¯. Apache-2.0'})
 else:
     # One self-contained SyMath.exe (onefile). Windows uses the system WebView2 runtime for the window.
     exe = EXE(pyz, a.scripts, a.binaries, a.datas, [], name='SyMath', console=False, upx=False,
